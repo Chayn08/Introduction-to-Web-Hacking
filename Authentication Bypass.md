@@ -98,6 +98,65 @@ curl 'http://MACHINE_IP/customers/reset?email=robert@acmeitsupport.thm' -H 'Cont
 
 This will create a support ticket with a link allowing you to log in as Robert. Using Robert’s account, you can access his support tickets and find the flag.
 
+## Cookie Manipulation for Privilege Escalation
+
+Editing cookies set by the web server during a session can sometimes lead to unauthorized access, higher privileges, or access to other users' data. Here's an example of modifying cookies to change user roles.
+
+- Plain Text Cookies
+
+Some cookies are stored in plain text, making them easy to understand and modify. For example, after a successful login, the following cookies might be set:
+
+```
+Set-Cookie: logged_in=true; Max-Age=3600; Path=/
+Set-Cookie: admin=false; Max-Age=3600; Path=/
+```
+
+The logged_in cookie controls if a user is logged in, and the admin cookie manages admin privileges. By altering these cookies, users might adjust their access level.
+
+- Initial Request
+Request the target page without modifying cookies:
+
+```
+curl http://MACHINE_IP/cookie-test
+```
+Response: Not Logged In
+
+- User-Level Access
+Modify the logged_in cookie to true while keeping admin as false:
+
+```
+curl -H "Cookie: logged_in=true; admin=false" http://MACHINE_IP/cookie-test
+```
+
+Response: Logged In As A User
+
+- Admin Access
+Set both logged_in and admin cookies to true:
+
+```
+curl -H "Cookie: logged_in=true; admin=true" http://MACHINE_IP/cookie-test
+```
+
+Response: Logged In As An Admin
+
+### Hashing and Encoding in Cookies
+
+Hashing turns data into a fixed-length hash, useful for irreversible transformations. For example, the string "1" hashed with different methods might produce:
+
+- md5	c4ca4238a0b923820dcc509a6f75849b
+- sha-256	6bb61e3f3b7f3af4e19d9b0e0f8ef5a5a3747a4dea2af221d4c910e52d0b7f54b
+- sha-512	4df4fea34f0fba823f51d3f4f0a1b62eae0e5da579ccb851fdb9df8e4c58b2b37b89903a740e11e172da793a6e79d5605f7f9bd058a12b280433ed6fa46510a
+
+Encoding transforms data into a readable format without encrypting it. Encoding methods like Base64 allow data to be transmitted over mediums that support only ASCII characters.
+
+- Example:
+
+```
+Set-Cookie: session=eyJpZCI6MSwiYWRtaW4iOmZhbHNlfQ==; Max-Age=3600; Path=/
+```
+
+Decoding the Base64 string reveals {"id":1,"admin":false}. Changing admin to true, re-encoding to Base64, and setting this in the cookie gives admin privileges.
+
 
 
 
