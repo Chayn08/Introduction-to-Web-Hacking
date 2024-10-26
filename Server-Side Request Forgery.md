@@ -35,3 +35,48 @@ An allow list only permits requests to specific approved domains or IP addresses
 
 3. Open Redirects
 In some cases, applications may have open redirects where users are redirected to external URLs. Attackers could exploit this feature to redirect SSRF requests to their own controlled domains, enabling unauthorized access or data extraction.
+
+### Questions : 
+
+- What website can be used to catch HTTP requests from a server?
+
+  requestbin.com
+
+- What method can be used to bypass strict rules?
+
+  Open Redirect
+
+- What IP address may contain sensitive data in a cloud environment?
+
+  169.254.169.254
+
+- What type of list is used to permit only certain input?
+
+  Allow List
+
+- What type of list is used to stop certain input?
+
+  Deny List
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
